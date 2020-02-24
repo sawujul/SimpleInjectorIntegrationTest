@@ -61,7 +61,7 @@ namespace SimpleInjector.IntegrationTests
         private readonly WebApplicationFactory<FakeStartup> _factory1;
         private readonly WebApplicationFactory<FakeStartup> _factory2;
 
-        public EventControllerTests(WebApplicationFactory<FakeStartup> factory)
+        public EventControllerTests(Factory<FakeStartup> factory)
         {
             _factory1 = factory.WithWebHostBuilder(builder =>
             {
