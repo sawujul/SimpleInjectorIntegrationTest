@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using SimpleInjector.WebAPI;
 using System.Net;
 using System.Threading.Tasks;
+using System.Text.Json;
 using Xunit;
 
 namespace SimpleInjector.IntegrationTests
@@ -53,6 +56,9 @@ namespace SimpleInjector.IntegrationTests
             var response = await client.GetAsync("/weatherforecast");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            await using var responseStream = await response.Content.ReadAsStreamAsync();
+            var content = await JsonSerializer.DeserializeAsync<WeatherForecast[]>(responseStream);
+            Assert.Equal(DateTime.MinValue, (content.First().Date));
         }
     }
 
